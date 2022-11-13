@@ -16,14 +16,31 @@ const cargarMisProductos = ()=> {
 }
 cargarMisProductos()
 
+const mostrarTabla=document.querySelector("#tablaCarrito")
+const mostrarContenido=document.querySelector("#contenidoCarrito")
+
 //Agrego productos al carrito
 const agregarAlCarrito = (e)=> { 
     let resultado = productos.find(prod => prod.nombre === e.target.id)
         if (resultado !== undefined) {
             carrito.push(resultado)
             guardarCarrito()
+            mostrarTabla.style.display=""
+            mostrarContenido.innerHTML=""
+            carrito.forEach((producto) => {
+                mostrarContenido.innerHTML += tablaCarrito(producto)
+            })
+            carritoTotal = carrito.reduce(
+                (acc, itemCarrito) => acc+itemCarrito.precio,0
+            )
+            mostrarContenido.innerHTML +=
+            `<tr>
+            <td>Total</td>
+            <td>${carritoTotal}</td>
+        </tr>`
         }
 }
+
 
 const guardarCarrito = ()=> {
     if (carrito.length > 0) { localStorage.setItem("carrito", JSON.stringify(carrito)) }
@@ -38,3 +55,26 @@ const recuperarCarrito = ()=> {
     }
 }
 recuperarCarrito()
+
+//armo funcion carrito
+
+const tablaCarrito=(itemCarrito)=> {
+    return `<tr>
+                <td>${itemCarrito.nombre}</td>
+                <td>${itemCarrito.precio}</td>
+            </tr>`
+        
+}
+
+//Borro carrito
+function borrarCarrito() {
+    localStorage.removeItem("carrito")
+    mostrarContenido.innerHTML = ""
+    carrito.splice(0,carrito.length)
+    mostrarTabla.style.display="none"
+}
+const borroCarrito =document.querySelector("#borroCarrito")
+borroCarrito.addEventListener("click",borrarCarrito)
+
+
+
