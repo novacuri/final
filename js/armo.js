@@ -1,4 +1,4 @@
-// Creamos html desde JS
+// Armo html desde JS
 
 const retornoCard = (producto)=> {
     return `<div class="card">
