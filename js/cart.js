@@ -8,13 +8,27 @@ const activarBotonesAdd = ()=> {
     botonesAdd.forEach(btn => btn.addEventListener("click", (e)=> agregarAlCarrito(e)))
 }
 
-//Recorro array y cargo tarjetas en el html
-const cargarMisProductos = ()=> { 
+//Recorro array y cargo tarjetas en el html -- ya no uso mas por incorporar fetch
+/* const cargarMisProductos = ()=> { 
     container.innerHTML = ""
     productos.forEach(producto => container.innerHTML += retornoCard(producto))
     activarBotonesAdd()         
 }
-cargarMisProductos()
+cargarMisProductos() */
+
+const cargarMisProductos = async () => {
+	container.innerHTML = "";
+	productos = await conectaMockapi();
+	if (productos !== "Error" && productos !== "Not found" && productos.length > 0) {
+		productos.forEach(
+			(producto) => (container.innerHTML += retornoCard(producto))
+		);
+	} else {
+		container.innerHTML = retornoError();
+	}
+	activarBotonesAdd(); 
+};
+cargarMisProductos();
 
 const mostrarTabla=document.querySelector("#tablaCarrito")
 const mostrarContenido=document.querySelector("#contenidoCarrito")
